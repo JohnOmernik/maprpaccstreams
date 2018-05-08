@@ -71,7 +71,7 @@ LD_PRELOAD=/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/amd64/server/libjvm.so ./pr
 
 Thus, at a minimum, documentation seems pretty far off, and ideally, this stuff should just be handled in the PACC to make the developer experience better. 
 
-### Challenge 3 Doc Confusion
+### Challenge 3: Doc Confusion
 -----------
 In the docs for python client
 
@@ -80,4 +80,10 @@ https://maprdocs.mapr.com/home/AdvancedInstallation/InstallingStreamsPYClient.ht
 It has MEP-3.0 hard coded in the line. This could get confusing if folks don't know they need to change it. (<version> is a variable, why not MEP?)
 
 Also, is there an option for "universal"? In the Package directory? installing from under "mac" even when for linux seems like another avenue for confusion. 
+
+
+### Bonus Challenge related to LD_LIBRARY_PATH
+------------
+Why doesn't WORKDIR /app/code work in the PACC? 
+
 
