@@ -10,7 +10,7 @@ MAPRCLI="maprcli"
 #MAPRCLI="/home/zetaadm/homecluster/zetago/zeta fs mapr maprcli -U=mapr"
 if [ ! -d "$POSIX_VOL" ]; then
     echo "Volume not detected at $POSIX_VOL: Creating"
-    $MAPRCLI volume create -path $MAPR_STREAMS_VOLUME_LOCATION -rootdirperms 775 -user "${MAPR_CONTAINER_USER}:fc,a,dump,restore,m,d mapr:fc,a,dump,restore,m,d" -ae $MAPR_CONTAINER_USER -name "prod.data.streamstest"
+    $MAPRCLI volume create -path $MAPR_STREAMS_VOLUME_LOCATION -rootdirperms 775 -user "${MAPR_CONTAINER_USER}:fc,a,dump,restore,m,d mapr:fc,a,dump,restore,m,d" -ae $MAPR_CONTAINER_USER -name "$MAPR_STREAMS_VOLUME_NAME"
 
     if [ "$?" == "0" ]; then
         echo "Volume Created successfully"
