@@ -1,16 +1,36 @@
 #!/bin/bash
 
-. ./env.list
 
-MYDIR=$(pwd)
-CODEDIR="$MYDIR/code"
+if [ -z "$ENV_FILE" ]; then
+    ENV_FILE="./env.list"
+fi
+echo "Using ENV file: $ENV_FILE"
+
+. $ENV_FILE
 
 PORTS=""
-VOLS="-v=/tmp/mapr_ticket:/tmp/mapr_ticket:ro -v=${CODEDIR}:/app/code"
 
-sudo docker run -it $PORTS --env-file ./env.list $VOLS \
-   --device /dev/fuse \
-   --cap-add SYS_ADMIN \
-   --cap-add SYS_RESOURCE \
-   --security-opt apparmor:unconfined \
-   $IMG /bin/bash
+if [ "$MAPR_TICKETFILE_LOCATION" != "" ]; then
+    echo "Setting Secure Cluster"
+    VOLS="-v=${MAPR_TICKET_HOST_LOCATION}:${MAPR_TICKET_CONTAINER_LOCATION}:ro"
+else
+    VOLS=""
+fi
+
+# If the APP_CMD is blank OR a 1  is passed as an argument to run.sh run the conainter with /bin/bash
+# This allows you to update the command in the container to start the app directly 
+if [ "$APP_CMD" == "" ] || [ "$1" == "1" ]; then
+    APP_CMD="/bin/bash"
+fi
+
+
+# Read the env.list and create the env.list.docker to use. 
+env|sort|grep -P "^(MAPR_|APP_)" > ./env.list.docker
+
+sudo docker run -it $PORTS $VOLS --env-file ./env.list.docker \
+--device /dev/fuse \
+--ipc host \
+--cap-add SYS_ADMIN \
+--cap-add SYS_RESOURCE \
+--security-opt apparmor:unconfined \
+ $APP_IMG $APP_CMD
