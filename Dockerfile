@@ -28,6 +28,12 @@ RUN pip install python-snappy python-lzo brotli kazoo requests pytest && pip ins
 #pip install --global-option=build_ext --global-option="--library-dirs=/opt/mapr/lib" --global-option="--include-dirs=/opt/mapr/include/" $MAPR_STREAMS_PYTHON
 
 
-CMD ["/bin/bash"]
+RUN mkdir -p /app/run
+
+COPY gorun.sh /app/run/
+
+RUN chmod +x /app/run/gorun.sh
+
+CMD ["/app/run/gorun.sh"]
 
 
