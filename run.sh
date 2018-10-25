@@ -1,12 +1,7 @@
 #!/bin/bash
 
 
-if [ -z "$ENV_FILE" ]; then
-    ENV_FILE="./env.list"
-fi
-echo "Using ENV file: $ENV_FILE"
-
-. $ENV_FILE
+. ./env.list
 
 PORTS=""
 
@@ -19,9 +14,11 @@ fi
 
 # If the APP_CMD is blank OR a 1  is passed as an argument to run.sh run the conainter with /bin/bash
 # This allows you to update the command in the container to start the app directly 
-if [ "$APP_CMD" == "" ] || [ "$1" == "1" ]; then
-    APP_CMD="/bin/bash"
-fi
+#if [ "$APP_CMD" == "" ] || [ "$1" == "1" ]; then
+#    APP_RUN_CMD="/bin/bash"
+#else
+#    APP_RUN_CMD="/app/run/gorun.sh"
+#fi
 
 
 # Read the env.list and create the env.list.docker to use. 
@@ -33,4 +30,4 @@ sudo docker run -it $PORTS $VOLS --env-file ./env.list.docker \
 --cap-add SYS_ADMIN \
 --cap-add SYS_RESOURCE \
 --security-opt apparmor:unconfined \
- $APP_IMG $APP_CMD
+ $APP_IMG 
